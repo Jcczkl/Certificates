@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Joseph Chan Colin — Verified Credentials</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    color-scheme: light dark;
+    --paper: #f7f4ee;
+    --paper-raised: #fffdf9;
+    --ink: #201c18;
+    --ink-soft: #5c554c;
+    --ink-faint: #8a8175;
+    --line: #ddd5c6;
+    --accent: #8a5a2b;
+    --accent-soft: #f1e4d0;
+    --verified: #3f6b52;
+    --verified-soft: #e5efe8;
+    --shadow: rgba(32, 28, 24, 0.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #16140f;
+      --paper-raised: #1e1b15;
+      --ink: #ece6da;
+      --ink-soft: #b7ad9d;
+      --ink-faint: #857c6e;
+      --line: #37322a;
+      --accent: #d3a15c;
+      --accent-soft: #2c2418;
+      --verified: #86bd97;
+      --verified-soft: #202a22;
+      --shadow: rgba(0, 0, 0, 0.35);
+    }
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+    margin: 0;
+    padding: 56px 20px 72px;
+    line-height: 1.55;
+  }
+  .wrap { max-width: 700px; margin: 0 auto; }
+
+  header { margin-bottom: 44px; }
+  .eyebrow {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 12.5px;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 14px;
+  }
+  h1 {
+    font-family: "Fraunces", Georgia, serif;
+    font-weight: 600;
+    font-size: clamp(32px, 6vw, 44px);
+    line-height: 1.08;
+    margin: 0 0 12px;
+    text-wrap: balance;
+    letter-spacing: -0.01em;
+  }
+  header p {
+    max-width: 60ch;
+    color: var(--ink-soft);
+    font-size: 16px;
+    margin: 0;
+  }
+
+  .list { display: flex; flex-direction: column; gap: 18px; }
+
+  .card {
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--accent);
+    border-radius: 6px;
+    padding: 22px 24px;
+    box-shadow: 0 1px 2px var(--shadow);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .kind {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 11.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 11.5px;
+    letter-spacing: 0.04em;
+    padding: 4px 9px;
+    border-radius: 100px;
+    background: var(--verified-soft);
+    color: var(--verified);
+    white-space: nowrap;
+  }
+  .badge.doc { background: var(--accent-soft); color: var(--accent); }
+  .badge svg { width: 11px; height: 11px; flex: none; }
+
+  .cred-title {
+    font-family: "Fraunces", Georgia, serif;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 1.28;
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 4px 24px;
+    font-size: 14px;
+    color: var(--ink-soft);
+  }
+  .meta dt {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin: 0;
+  }
+  .meta dd { margin: 1px 0 0; color: var(--ink); }
+  .meta-block { margin: 0; }
+
+  .card-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 2px; }
+  .btn {
+    font-family: "IBM Plex Sans", sans-serif;
+    font-size: 13.5px;
+    font-weight: 500;
+    text-decoration: none;
+    padding: 9px 16px;
+    border-radius: 5px;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    border: 1px solid transparent;
+    transition: transform 0.1s ease, opacity 0.15s ease;
+    cursor: pointer;
+  }
+  .btn:active { transform: translateY(1px); }
+  .btn-primary { background: var(--ink); color: var(--paper); }
+  .btn-primary:hover { opacity: 0.85; }
+  .btn-ghost { border-color: var(--line); color: var(--ink-soft); background: transparent; }
+  .btn-ghost:hover { border-color: var(--ink-faint); color: var(--ink); }
+  .btn svg { width: 13px; height: 13px; }
+
+  footer {
+    margin-top: 52px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+    font-size: 13.5px;
+    color: var(--ink-faint);
+  }
+  footer p { max-width: 62ch; margin: 0 0 8px; }
+  footer a { color: var(--ink-soft); }
+
+  @media (max-width: 480px) {
+    .card-top { flex-direction: row; }
+    body { padding: 40px 16px 56px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <p class="eyebrow">Joseph Chan Colin — Credential Record</p>
+    <h1>Verified credentials</h1>
+    <p>Two SkillsFuture Singapore Statements of Attainment, verifiable on-chain via OpenCerts, and two training certificates.</p>
+  </header>
+
+  <div class="list">
+
+    <article class="card">
+      <div class="card-top">
+        <span class="kind">Statement of Attainment · SOA-001</span>
+        <span class="badge" id="badge-forklift">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10.5l3.5 3.5L16 5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Blockchain-verified
+        </span>
+      </div>
+      <h2 class="cred-title">Forklift Operator</h2>
+      <dl class="meta">
+        <div class="meta-block"><dt>Issued by</dt><dd>SkillsFuture Singapore</dd></div>
+        <div class="meta-block"><dt>Assessed by</dt><dd>MINDEF/SAF/ARMY Logistics Training Institute</dd></div>
+        <div class="meta-block"><dt>Result</dt><dd>Competent (Grade C) · SSEC-EQA N9</dd></div>
+        <div class="meta-block"><dt>Attained</dt><dd>12 Aug 2024</dd></div>
+      </dl>
+      <div class="card-actions">
+        <a class="btn btn-primary" href="https://www.opencerts.io/?q=%7B%22type%22%3A%22DOCUMENT%22%2C%22payload%22%3A%7B%22uri%22%3A%22https%3A%2F%2Fraw.githubusercontent.com%2FJcczkl%2FCertificates%2Frefs%2Fheads%2Fmain%2Fforklift-operator.opencert%22%2C%22permittedActions%22%3A%5B%22STORE%22%5D%2C%22redirect%22%3A%22https%3A%2F%2Fwww.opencerts.io%22%7D%7D" target="_blank" rel="noopener">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10.5l3.5 3.5L16 5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Verify on OpenCerts ↗
+        </a>
+        <a class="btn btn-ghost" href="forklift-operator.opencert" target="_blank" rel="noopener">
+          Download certificate
+        </a>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="card-top">
+        <span class="kind">Statement of Attainment · SF_SOA_001</span>
+        <span class="badge" id="badge-accounting">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10.5l3.5 3.5L16 5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Blockchain-verified
+        </span>
+      </div>
+      <h2 class="cred-title">DIY Corporate Compliance: Accounts, Secretarial &amp; Tax Essentials</h2>
+      <dl class="meta">
+        <div class="meta-block"><dt>Issued by</dt><dd>SkillsFuture Singapore</dd></div>
+        <div class="meta-block"><dt>Assessed by</dt><dd>Sue Kam Accounting Pte Ltd</dd></div>
+        <div class="meta-block"><dt>Result</dt><dd>Competent (Grade C) · SSEC-EQA N9</dd></div>
+        <div class="meta-block"><dt>Attained</dt><dd>10 Aug 2026</dd></div>
+      </dl>
+      <div class="card-actions">
+        <a class="btn btn-primary" href="https://www.opencerts.io/?q=%7B%22type%22%3A%22DOCUMENT%22%2C%22payload%22%3A%7B%22uri%22%3A%22https%3A%2F%2Fraw.githubusercontent.com%2FJcczkl%2FCertificates%2Frefs%2Fheads%2Fmain%2Faccounting-standards.opencert%22%2C%22permittedActions%22%3A%5B%22STORE%22%5D%2C%22redirect%22%3A%22https%3A%2F%2Fwww.opencerts.io%22%7D%7D" target="_blank" rel="noopener">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10.5l3.5 3.5L16 5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Verify on OpenCerts ↗
+        </a>
+        <a class="btn btn-ghost" href="accounting-standards.opencert" target="_blank" rel="noopener">
+          Download certificate
+        </a>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="card-top">
+        <span class="kind">Certificate of attendance</span>
+        <span class="badge doc">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3h6l3 3v11a1 1 0 01-1 1H6a1 1 0 01-1-1V4a1 1 0 011-1z" stroke-linejoin="round"/><path d="M12 3v3h3" stroke-linejoin="round"/></svg>
+          PDF certificate
+        </span>
+      </div>
+      <h2 class="cred-title">Fundamentals of Corporate Secretarial Practice</h2>
+      <dl class="meta">
+        <div class="meta-block"><dt>Issued by</dt><dd>Chartered Secretaries Institute of Singapore</dd></div>
+        <div class="meta-block"><dt>Duration</dt><dd>18 hours, over 3 sessions</dd></div>
+        <div class="meta-block"><dt>Held</dt><dd>10, 17 &amp; 24 July 2026</dd></div>
+      </dl>
+      <div class="card-actions">
+        <a class="btn btn-primary" href="csis-corporate-secretarial-practice.pdf" target="_blank" rel="noopener">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3h6l3 3v11a1 1 0 01-1 1H6a1 1 0 01-1-1V4a1 1 0 011-1z" stroke-linejoin="round"/><path d="M12 3v3h3" stroke-linejoin="round"/></svg>
+          View certificate
+        </a>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="card-top">
+        <span class="kind">Certificate of achievement</span>
+        <span class="badge doc">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3h6l3 3v11a1 1 0 01-1 1H6a1 1 0 01-1-1V4a1 1 0 011-1z" stroke-linejoin="round"/><path d="M12 3v3h3" stroke-linejoin="round"/></svg>
+          PDF certificate
+        </span>
+      </div>
+      <h2 class="cred-title">WSQ Fundamentals of Bookkeeping and Accounting</h2>
+      <dl class="meta">
+        <div class="meta-block"><dt>Issued by</dt><dd>Inspizone Training</dd></div>
+        <div class="meta-block"><dt>Completed</dt><dd>11 July 2026</dd></div>
+      </dl>
+      <div class="card-actions">
+        <a class="btn btn-primary" href="wsq-bookkeeping-and-accounting.pdf" target="_blank" rel="noopener">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3h6l3 3v11a1 1 0 01-1 1H6a1 1 0 01-1-1V4a1 1 0 011-1z" stroke-linejoin="round"/><path d="M12 3v3h3" stroke-linejoin="round"/></svg>
+          View certificate
+        </a>
+      </div>
+    </article>
+
+  </div>
+
+  <footer>
+    <p>The two Statements of Attainment are anchored on-chain and checked live by <a href="https://www.opencerts.io" target="_blank" rel="noopener">OpenCerts</a> — "Verify on OpenCerts" loads the certificate there automatically, with no manual upload step. Identity fields not needed for verification (NRIC and ID type) have been cryptographically removed from the shared copy — this doesn't affect the certificate's validity, which is checked against the same blockchain record either way.</p>
+    <p>Link to this page from a resume or profile as a single reference for all four records.</p>
+  </footer>
+</div>
+</body>
+</html>
